@@ -1,0 +1,84 @@
+﻿@using System.Data;
+@{
+	Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+	DataTable Staff = ViewBag.Staff;
+	DataTable Supplier = ViewBag.Supplier;
+}
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h1>PO Tracking</h1>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>PurchaseOrder</th>
+									<th>ActivityType</th>
+									<th>ActivityDate</th>
+									<th>Staff</th>
+									<th>Supplier</th>
+									<th>Remarks</th>
+
+								</tr>
+							</thead>
+							<tbody>
+
+								@for (int i = 0; i < Model.Rows.Count; i++)
+								{
+									<tr>
+										<td>#PurchaseOrder-@Model.Rows[i]["PurchaseOrderID"]</td>
+										<td>@Model.Rows[i]["ActivityType"]</td>
+										<td>@Model.Rows[i]["ActivityDate"]</td>
+										@if (Model.Rows[i]["StaffID"] == 0)
+										{
+											<td>NA</td>
+										}
+										else
+										{
+											for (int j = 0; j < Staff.Rows.Count; j++)
+											{
+												if (Model.Rows[i]["StaffID"] == Convert.ToInt32(Staff.Rows[j]["StaffID"]))
+												{
+													
+													<td><a href="WorkHistory?StaffID=@Staff.Rows[j]["StaffID"]">@Staff.Rows[j]["Name"]</a></td>
+												}
+
+
+											}
+										}
+										@if (Model.Rows[i]["SupplierID"] == 0)
+										{
+											<td>NA</td>
+										}
+										else
+										{
+											for (int j = 0; j < Supplier.Rows.Count; j++)
+											{
+												if (Model.Rows[i]["SupplierID"] == Convert.ToInt32(Supplier.Rows[j]["SupplierID"]))
+												{
+													<td>@Supplier.Rows[j]["Name"]</td>
+												}
+
+											}
+										}
+										<td>@Model.Rows[i]["Remarks"]</td>
+									</tr>
+
+								}
+
+
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+

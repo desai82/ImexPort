@@ -1,0 +1,193 @@
+﻿@using System.Data;
+@{
+	Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+	DataTable FCAID = ViewBag.FCAID;
+	DataTable ICAID = ViewBag.ICAID;
+	DataTable POItem = ViewBag.POItem;
+	DataTable MatID = ViewBag.MatID;
+	string SName = ViewBag.SName;
+	string ApproverName = ViewBag.ApproverName;
+}
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h1 class="card-title"><b>New Purchase Order</b></h1>
+					<form class="form-sample" action="PODetailsSubmit" method="post" enctype="multipart/form-data">
+						<br />
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">StaffID</label>
+									<div class="col-sm-9">
+										<input type="text" readonly="readonly" class="form-control" name="StaffID" value=@Model.StaffID />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">CreateDate</label>
+									<div class="col-sm-9">
+										<input type="datetime" class="form-control" name="CreateDate" value=@Model.CreateDate />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">SupplierName</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" readonly="readonly" name="SupplierName" value=@SName />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Status</label>
+									<div class="col-sm-9">
+										<input type="text" name="Status" readonly="readonly" value=@Model.Status />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">ApproverName</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="ApproverName" readonly="readonly" value=@ApproverName />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Requested Date</label>
+									<div class="col-sm-9">
+										<input type="datetime" class="form-control" name="RequestedDate" value=@Model.RequestedDate />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">ForeignAgent</label>
+									<div class="col-sm-9">
+										<select class="form-control" name="FCAID" tabindex="1">
+											@for (int i = 0; i < FCAID.Rows.Count; i++)
+											{
+												<option value='@FCAID.Rows[i]["CustomsAgentID"]'>@FCAID.Rows[i]["Name"]</option>
+											}
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">IndiaAgent</label>
+									<div class="col-sm-9">
+										<select class="form-control" name="ICAID" tabindex="1">
+											@for (int i = 0; i < ICAID.Rows.Count; i++)
+											{
+												<option value='@ICAID.Rows[i]["CustomsAgentID"]'>@ICAID.Rows[i]["Name"]</option>
+											}
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						
+						<div class="row ">
+							<div class="col-md-12">
+								<div class="form-group justify-content-center row">
+									<div class="form-group">
+										
+										<input type="hidden" class="form-control" name="SupplierID" value=@Model.SupplierID />
+										<input type="hidden" class="form-control" name="ApproverID" value=@Model.ApproverID />
+										<button type="submit" class="btn btn-dark btn-rounded btn-fw">Submit</button>
+									</div>
+								</div>	
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="content-wrapper">
+	<div class="row">
+		<di class="col-lg-12 grid-margin stretch-card">
+			<div class="card">
+				<div class="card-body">
+
+					<h1 class="card-title">PurchaserOrder Items</h1>
+
+					<form action="POItemAdd" method="post" enctype="multipart/form-data">
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Material</th>
+										<th>Quantity</th>
+										<th>Rate</th>
+										<th>Remarks</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									@for (int i = 0; i < POItem.Rows.Count; i++)
+									{
+										<tr>
+											<td>@POItem.Rows[i]["MaterialID"]</td>
+											<td>@POItem.Rows[i]["Quantity"]</td>
+											<td>@POItem.Rows[i]["Rate"]</td>
+											<td>@POItem.Rows[i]["Remarks"]</td>
+											<td><a href="POItemDelete?PurchaseOrderID=@Model.PurchaseOrderID&POItemID=@Model.Rows[i]["POItemID"]">REMOVE</a></td>
+										</tr>
+									}
+
+									<tr>
+										<td>
+											<select class="form-control" name="MaterialID" tabindex="1">
+												@for (int i = 0; i < MatID.Rows.Count; i++)
+												{
+													<option value='@MatID.Rows[i]["MaterialID"]'>@MatID.Rows[i]["MaterialName"]</option>
+												}
+											</select>
+										</td>
+										<td>
+											<input type="text" name="Quantity" class="form-control" />
+										</td>
+										<td>
+											<input type="text" name="Rate" class="form-control" />
+										</td>
+										<td>
+											<input type="text" name="Remarks" class="form-control" />
+										</td>
+										<td>
+											<input type="hidden" name="PurchaseOrderID" value="@Model.PurchaseOrderID" />
+											<button type="submit" class="btn btn-dark btn-rounded btn-fw">Add</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+			</div>
+		</di>
+	</div>
+</div>
+
+
+

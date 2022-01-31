@@ -1,0 +1,93 @@
+﻿
+
+@{
+	Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+
+}
+
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h1>Search Staff</h1>
+
+					<form  action="StaffSearchSubmit" method="post" enctype="multipart/form-data">
+
+						<h5><u>Search By Name</u></h5>
+
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Name</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="Name" />
+							</div>
+						</div>
+
+						<h5><u>Search By Designation</u></h5>
+
+						
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Designation</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="Designation" />
+									</div>
+								</div>
+							
+
+
+						<div class="row ">
+							<div class="col-md-12">
+								<div class="form-group justify-content-center row">
+									<div class="form-group">
+										<button class="btn btn-primary  submit-btn btn-block">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+					</form>
+					<h1>Staff List</h1>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Email</th>
+									<th>Mobile</th>
+									<th>Username</th>
+									<th>Active</th>
+									<th>Designation</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								@for (int i = 0; i < Model.Rows.Count; i++)
+								{
+									<tr>
+										<td>@Model.Rows[i]["StaffID"]</td>
+										<td>@Model.Rows[i]["Name"]</td>
+										<td>@Model.Rows[i]["Email"]</td>
+										<td>@Model.Rows[i]["Mobile"]</td>
+										<td>@Model.Rows[i]["Username"]</td>
+										<td>@Model.Rows[i]["IsActive"]</td>
+										<td>@Model.Rows[i]["Designation"]</td>
+										<td><a href="StaffEdit?StaffID=@Model.Rows[i]["StaffID"]">Edit</a></td>
+									</tr>
+
+								}
+
+
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+

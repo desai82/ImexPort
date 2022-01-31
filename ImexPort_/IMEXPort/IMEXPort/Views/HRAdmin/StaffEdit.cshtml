@@ -1,0 +1,190 @@
+﻿@using System.Data
+@{
+	Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+	DataTable DeptID = ViewBag.DeptID;
+	DataTable StaffID = ViewBag.StaffID;
+}
+
+
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h1 class="card-title">Register New Staff</h1>
+					<form class="form-sample" action="StaffEditSubmit" method="post" enctype="multipart/form-data">
+						<p class="card-description">
+							Personal info
+						</p>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Name</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" required name="Name"value="@Model.Name"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Email</label>
+									<div class="col-sm-9">
+										<input type="email" class="form-control" required name="Email" value="@Model.Email" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Mobile</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" required minlength="10" maxlength="10" name="Mobile" value="@Model.Mobile" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Photo</label>
+									<div class="col-sm-9">
+										<img src="~/ProfilePhotos/StaffPics/@Model.Photo" style="max-height:200px; max-width:200px;" />
+										<br />
+										<input type="file" name="Photo"/>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Username</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" required name="Username" value="@Model.Username" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Password</label>
+									<div class="col-sm-9">
+										<input type="password" class="form-control" required minlength="6" name="Password" value="@Model.Password" />
+									</div>
+								</div>
+							</div>
+				
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Active</label>
+									<div class="col-sm-1">
+										<input type="checkbox" class="form-control" name="IsActive" value="1" @(Model.IsActive ? "checked" : "") />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">DepartmentID</label>
+									<div class="col-sm-9">
+										<select class="form-control" name="DepartmentID" tabindex="1" data-placeholder="Select here..">
+											@for (int i = 0; i < DeptID.Rows.Count; i++)
+											{
+												<option value='@DeptID.Rows[i]["DepartmentID"]' @((Model.DepartmentID == Convert.ToInt32(DeptID.Rows[i]["DepartmentID"])) ? "selected" : "")>@DeptID.Rows[i]["DeptName"]</option>
+											}
+										</select>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">SupervisorID</label>
+									<div class="col-sm-9">
+										<select class="form-control" name="SupervisorID" tabindex="1" data-placeholder="Select here..">
+											@for (int i = 0; i < StaffID.Rows.Count; i++)
+											{
+												<option value='@StaffID.Rows[i]["StaffID"]' @((Model.SupervisorID == Convert.ToInt32(@StaffID.Rows[i]["StaffID"])) ? "selected" : "")>@StaffID.Rows[i]["Name"]</option>
+											}
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Designation</label>
+									<div class="col-sm-9">
+										<select class="form-control" required name="Designation" tabindex="1">
+											<option value="Admin" @(Model.Designation=="Admin" ? "selected" : "")>Admin</option>
+											<option value="Purchase Manager"  @(Model.Designation=="Purchase Manager" ? "selected" : "")>Purchase Manager</option>
+											<option value="Purchase Staff" @(Model.Designation=="Purchase Staff" ? "selected" : "") >Purchase Staff</option>
+											<option value="Finance Manager" @(Model.Designation=="Finance Manager" ? "selected" : "")>Finance Manager</option>
+											<option value="Finance Staff" @(Model.Designation=="Finance Staff" ? "selected" : "")>Finance Staff</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						
+
+						<div class="row ">
+							<div class="col-md-12">
+								<div class="form-group justify-content-center row">
+									<div class="form-group">
+										<input type="hidden" name="StaffID" value="@Model.StaffID" />
+										<button type="submit" class="btn btn-dark btn-rounded btn-fw">Update</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

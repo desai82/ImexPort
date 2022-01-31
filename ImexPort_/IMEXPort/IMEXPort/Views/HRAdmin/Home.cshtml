@@ -1,0 +1,178 @@
+﻿@using System.Data;
+@{
+    Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+
+    DataTable PurchaseOrder = ViewBag.PurchaseOrder;
+
+
+    int TotalCount=0, SubmittedforApproval=0 ,RejBySuper = 0, ReleBySuper = 0, RejBySupp = 0, AcceBySupp = 0, SuppDispatched= 0,FCAReceived=0,FCADispatch=0,ICAArrived=0,ImportDutyPending=0,ImportDutyPaid=0,ImportCleared=0;
+    for (int i = 0; i < PurchaseOrder.Rows.Count; i++)
+    {
+        if (PurchaseOrder.Rows[i]["Status"].ToString() == "Rejected by Supervisor")
+        {
+            RejBySuper = RejBySuper + 1;
+        }
+        if (PurchaseOrder.Rows[i]["Status"].ToString() == "Submitted For Approval")
+        {
+            SubmittedforApproval = SubmittedforApproval + 1;
+        }
+        if (PurchaseOrder.Rows[i]["Status"].ToString() != "Submitted For Approval"
+    && PurchaseOrder.Rows[i]["Status"].ToString() != "Rejected by Supervisor" && PurchaseOrder.Rows[i]["Status"].ToString() != "Cancelled")
+        {
+            ReleBySuper = ReleBySuper + 1;
+        }
+        if (PurchaseOrder.Rows[i]["Status"].ToString() == "Accepted By Supplier" || PurchaseOrder.Rows[i]["Status"].ToString() == "Supplier Dispatched"
+           || PurchaseOrder.Rows[i]["Status"].ToString() == "FCA Received" || PurchaseOrder.Rows[i]["Status"].ToString() == "FCA Dispatched"
+           || PurchaseOrder.Rows[i]["Status"].ToString() == "ICA Arrived" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Pending"
+           || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Paid" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Cleared")
+        {
+            AcceBySupp = AcceBySupp + 1;
+        }
+        if (PurchaseOrder.Rows[i]["Status"].ToString() == "Supplier Dispatched"
+           || PurchaseOrder.Rows[i]["Status"].ToString() == "FCA Received" || PurchaseOrder.Rows[i]["Status"].ToString() == "FCA Dispatched"
+           || PurchaseOrder.Rows[i]["Status"].ToString() == "ICA Arrived" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Pending"
+           || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Paid" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Cleared")
+        {
+            SuppDispatched = SuppDispatched + 1;
+        }
+        if (PurchaseOrder.Rows[i]["Status"].ToString() == "FCA Received" || PurchaseOrder.Rows[i]["Status"].ToString() == "FCA Dispatched"
+          || PurchaseOrder.Rows[i]["Status"].ToString() == "ICA Arrived" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Pending"
+          || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Paid" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Cleared")
+        {
+            FCAReceived = FCAReceived + 1;
+        }
+        if ( PurchaseOrder.Rows[i]["Status"].ToString() == "FCA Dispatched"
+         || PurchaseOrder.Rows[i]["Status"].ToString() == "ICA Arrived" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Pending"
+         || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Paid" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Cleared")
+        {
+            FCADispatch = FCADispatch + 1;
+        }
+        if ( PurchaseOrder.Rows[i]["Status"].ToString() == "ICA Arrived" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Pending"
+         || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Paid" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Cleared")
+        {
+            ICAArrived = ICAArrived + 1;
+        }
+        if (PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Pending"
+         || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Paid" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Cleared")
+        {
+            ImportDutyPending = ImportDutyPending + 1;
+        }
+        if (PurchaseOrder.Rows[i]["Status"].ToString() == "Import Duty Paid" || PurchaseOrder.Rows[i]["Status"].ToString() == "Import Cleared")
+        {
+            ImportDutyPaid = ImportDutyPaid + 1;
+        }
+        if (PurchaseOrder.Rows[i]["Status"].ToString() == "Import Cleared")
+        {
+            ImportCleared = ImportCleared + 1;
+        }
+        if (PurchaseOrder.Rows[i]["Status"].ToString() == "Rejected by Supplier")
+        {
+            RejBySupp = RejBySupp + 1;
+        }
+
+    }
+    TotalCount = RejBySupp + ImportCleared + ImportDutyPaid + ImportDutyPending + ICAArrived +
+          SuppDispatched+ FCADispatch + FCAReceived + AcceBySupp + ReleBySuper + SubmittedforApproval;
+
+
+
+
+
+
+}
+
+<div class="content-wrapper">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"></h4>
+                <canvas id="pieChart1" style="height:500px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	$(function () {
+		/* ChartJS
+		 * -------
+		 * Data and config for chartjs
+		 */
+		'use strict';
+		var doughnutPieData = {
+			datasets: [{
+                data: [@RejBySupp , @ImportCleared ,@ImportDutyPaid , @ImportDutyPending , @ICAArrived ,
+                    @SuppDispatched , @FCADispatch , @FCAReceived , @AcceBySupp , @ReleBySuper , @SubmittedforApproval],
+				backgroundColor: [
+
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(255, 206, 86, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(15, 102, 255, 0.5)',
+                    'rgba(21, 85, 115, 0.5)',
+                    'rgba(149, 162, 235, 0.5)',
+                    'rgba(95, 206, 86, 0.5)',
+                    'rgba(200, 192, 192, 0.5)',
+                    'rgba(170, 102, 255, 0.5)',
+                    'rgba(230, 85, 115, 0.5)',
+                    'rgba(123, 102, 255, 0.5)',
+                    'rgba(180, 85, 115, 0.5)',
+				],
+				borderColor: [
+
+					'rgba(1, 162, 235, 1)',
+					'rgba(11, 206, 86, 1)',
+					'rgba(21, 192, 192, 1)',
+					'rgba(31, 102, 255, 1)',
+                    'rgba(41, 100, 100, 1)',
+                    'rgba(51, 162, 235, 1)',
+                    'rgba(61, 206, 86, 1)',
+                    'rgba(71, 192, 192, 1)',
+                    'rgba(81, 102, 255, 1)',
+                    'rgba(91, 100, 100, 1)',
+                    'rgba(100, 162, 235, 1)',
+                    'rgba(101, 206, 86, 1)',
+                    
+				],
+			}],
+
+			// These labels appear in the legend and in the tooltips when hovering different arcs
+			labels: [
+                'Rejected By Supervisor',
+                ' Submitted For Approval',
+                'Released By Supervisor',
+                'Accepted By Supplier ',
+                'Rejected By Supplier',
+                'Supplier Dispatched',
+                'FCA Received',
+                'FCA Dispatched',
+                'ICA Arrived',
+                'Import Duty Pending',
+                'Import Duty Paid',
+                'Import Cleared'
+
+			]
+		};
+		var doughnutPieOptions = {
+			responsive: true,
+			animation: {
+				animateScale: true,
+				animateRotate: true
+			}
+		};
+
+
+
+		if ($("#pieChart1").length) {
+			var pieChartCanvas = $("#pieChart1").get(0).getContext("2d");
+			var pieChart = new Chart(pieChartCanvas, {
+				type: 'pie',
+				data: doughnutPieData,
+				options: doughnutPieOptions
+			});
+		}
+
+	});
+</script>
+
+

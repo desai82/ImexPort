@@ -1,0 +1,115 @@
+﻿
+@{
+	Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+}
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h1 class="card-title">Register New Supplier</h1>
+					<form class="form-sample" action="SupplierNewSubmit" method="post" enctype="multipart/form-data">
+						<p class="card-description">
+							Personal info
+						</p>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Name</label>
+									<div class="col-sm-9">
+										<input type="text" required data-error="Enter properly" class="form-control" name="Name" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Email</label>
+									<div class="col-sm-9">
+										<input type="email"  required data-error="Enter properly" class="form-control" name="Email" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Mobile</label>
+									<div class="col-sm-9">
+										<input type="text" required data-error="Enter properly" maxlength="10" minlength="10" class="form-control" name="Mobile" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Photo</label>
+									<div class="col-sm-9">
+										<input type="file" name="Photo" required />
+									</div>
+								</div>
+							</div>
+							
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Username</label>
+									<div class="col-sm-9">
+										<input type="text"  required data-error="Enter properly" class="form-control" name="Username" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Password</label>
+									<div class="col-sm-9">
+										<input type="password" class="form-control" name="Password" required data-error="Enter properly"  minlength="6"/>
+									</div>
+								</div>
+							</div>
+							</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Active</label>
+									<div class="col-sm-1">
+										<input type="checkbox" class="form-control" name="IsActive" value="1" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Country</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="Country" />
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+		
+
+						<div class="row ">
+							<div class="col-md-12">
+								<div class="form-group justify-content-center row">
+									<div class="form-group">
+										<button type="submit" class="btn btn-dark btn-rounded btn-fw">Register</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

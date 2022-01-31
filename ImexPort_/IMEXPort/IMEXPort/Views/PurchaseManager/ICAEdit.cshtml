@@ -1,0 +1,79 @@
+﻿
+@{
+	
+		Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+	
+}
+
+
+<div class="content-wrapper">
+	<div class="row">
+
+		<div class="col-9 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">ICA Edit</h2>
+					<p class="card-description">
+						Custom Agent Registration
+					</p>
+					<form class="forms-sample" action="ICAEditSubmit" method="post" enctype="multipart/form-data">
+						<div class="form-group">
+							<label for="exampleInputName1">Name</label>
+							<input type="text" class="form-control" id="exampleInputName1" placeholder="Name" name="Name" value="@Model.Name" required>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail3">Email</label>
+							<input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email" name="Email" value="@Model.Email" required>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputMobile">Mobile</label>
+							<input type="text" class="form-control" id="exampleInputmobile" placeholder="Mobile" name="Mobile" value="@Model.Mobile" required maxlength="10" minlength="10">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputPhoto">Photo</label>
+							<img src="~/ProfilePhotos/CustomsAgentPics/@Model.Photo" style="max-height:200px; max-width:200px;" />
+							<br />
+							<input type="file" class="form-control" name="Photo"  >
+						</div>
+						<div class="form-group">
+							<label for="exampleInputUsername">Username</label>
+							<input type="text" class="form-control" id="exampleInputusername" placeholder="Username" name="Username" value="@Model.Username" required>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputPassword4">Password</label>
+							<input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password" name="Password" value="@Model.Password" required minlength="6">
+						</div>
+
+						<div class="form-actions">
+							<div class="form-group">
+								<label for="exampleInputCountry" class="col-form-label">Country</label>
+								<input type="text" readonly="readonly" class="form-control" placeholder="Country" name="Country" value="INDIA" required>
+
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="exampleInputPort4">Port</label>
+							<input type="text" class="form-control" id="exampleInputPort4" placeholder="Port" name="Port" value="@Model.Port" required data-error="Enter port" />
+						</div>
+
+						<div class="control-group form-group">
+							<label class="control-label col-form-label">Active</label>
+							<div class="controls">
+								<input type="checkbox" name="IsActive" value="1" @(Model.IsActive ? "checked" : "") />
+							</div>
+						</div>
+						<input type="hidden" class="form-control" name="CustomsAgentID" value="@Model.CustomsAgentID" />
+						<button type="Submit" class="btn btn-dark btn-rounded btn-fw">Update</button>
+
+
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

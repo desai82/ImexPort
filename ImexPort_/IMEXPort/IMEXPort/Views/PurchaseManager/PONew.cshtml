@@ -1,0 +1,100 @@
+﻿@using System.Data;
+@using IMEXPort.Models;
+@{
+
+	Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+
+	DataTable SupID = ViewBag.SupID;
+	DataTable ApproverID = ViewBag.ApproverID;
+	Staff CurrentStaff = (Staff)Session["Staff"];
+
+}
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h1 class="card-title"><b>New Purchase Order</b></h1>
+					<form class="form-sample" action="PONewSubmit" method="post" enctype="multipart/form-data">
+						<br />
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Supplier</label>
+								<div class="col-sm-9">
+									<select class="form-control" name="SupplierID" tabindex="1">
+										@for (int i = 0; i < SupID.Rows.Count; i++)
+										{
+											<option value='@SupID.Rows[i]["SupplierID"]'>@SupID.Rows[i]["Name"]</option>
+										}
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Approver</label>
+								<div class="col-sm-9">
+									<select class="form-control" name="ApproverID" tabindex="1">
+										@for (int i = 0; i < ApproverID.Rows.Count; i++)
+										{
+											if ((Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Purchase Staff" || Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Purchase Manager") && Convert.ToInt32(ApproverID.Rows[i]["StaffID"]) != CurrentStaff.StaffID)
+
+											{
+												<option value='@ApproverID.Rows[i]["StaffID"]' @((Convert.ToInt32(ApproverID.Rows[i]["StaffID"]) == ViewBag.CurrentStaff.SupervisorID) ? "selected" : "")>@ApproverID.Rows[i]["Name"]</option>
+											}
+										}
+									</select>
+								</div>
+
+
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Finance</label>
+								<div class="col-sm-9">
+									<select class="form-control" name="FinanceID" tabindex="1">
+										@for (int i = 0; i < ApproverID.Rows.Count; i++)
+										{
+											if (Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Finance Staff" || Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Finance Manager")
+											{
+												<option value="@ApproverID.Rows[i]["StaffID"]">@ApproverID.Rows[i]["Name"]</option>
+											}
+										}
+									</select>
+								</div>
+
+
+							</div>
+						</div>
+
+
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Requested Date</label>
+								<div class="col-sm-9">
+									<input type="date" class="form-control" name="RequestedDate" />
+								</div>
+							</div>
+						</div>
+
+						<div class="row ">
+							<div class="col-md-12">
+								<div class="form-group justify-content-center row">
+									<div class="form-group">
+										<button type="submit" class="btn btn-dark btn-rounded btn-fw">Next</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

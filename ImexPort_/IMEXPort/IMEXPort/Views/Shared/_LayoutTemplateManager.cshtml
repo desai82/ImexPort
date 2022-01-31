@@ -1,0 +1,603 @@
+﻿@using IMEXPort.Models
+@{
+    Staff CurrentStaff = (Staff)Session["Staff"];
+    Supplier CurrentSupplier = (Supplier)Session["Supplier"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>IMEXPort Solutions....</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/StarAdmin/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/StarAdmin/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/StarAdmin/vendors/css/vendor.bundle.addons.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="~/StarAdmin/vendors/icheck/skins/all.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/StarAdmin/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="~/StarAdmin/images/favicon.png" />
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        .form-control {
+            border: 1px solid #000000;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            //alert("123");
+
+            setInterval(function () {
+                $.get("/Alluser/GetNumber", function (data) {
+                    $(".notif_number").html(data);
+                    //alert("refresh done.");
+                });
+            }, 1000);
+
+
+        });
+    </script>
+
+
+
+</head>
+<body>
+    <div class="container-scroller">
+        <!-- partial:../../partials/_navbar.html -->
+        <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+
+            <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center">
+
+                <ul class="navbar-nav navbar-nav-right">
+
+
+                    @if (Session["Supplier"] != null && Session["Staff"] == null)
+                    {
+                        
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link count-indicator " href="~/Supplier/NewPO" >
+                                <i class="mdi mdi-bell"></i>
+                                <span class="count notif_number"></span>
+
+                            </a>
+
+                        </li>
+                        <li class="nav-item dropdown d-none d-xl-inline-block">
+                            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                                <span class="profile-text">Hello, @ViewBag.CurrentSupplier.Name !</span>
+                                <img class="img-xs rounded-circle" src="~/ProfilePhotos/SupplierPics/@ViewBag.CurrentSupplier.Photo" alt="Profile image">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+
+                                <a class="dropdown-item" href="~/Supplier/MyProfileSupplier">
+                                    View Profile
+                                </a>
+
+                                <a class="dropdown-item" href="~/Access/Logout">
+                                    Sign Out
+                                </a>
+                            </div>
+
+                        </li>
+                    }
+                    @if (Session["Supplier"] == null && Session["Staff"] != null)
+                    {
+                        if (CurrentStaff.Designation == "Purchase Manager" || CurrentStaff.Designation == "Purchase Staff")
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link count-indicator " href="~/PurchaseManager/POPendingApproval">
+                                    <i class="mdi mdi-bell"></i>
+                                    <span class="count notif_number"></span>
+
+                                </a>
+
+                            </li>
+                        }
+                        if(CurrentStaff.Designation == "Finance Manager" || CurrentStaff.Designation == "Finance Staff")
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link count-indicator " href="~/Finance/ImportDutyPending">
+                                    <i class="mdi mdi-bell"></i>
+                                    <span class="count notif_number"></span>
+
+                                </a>
+
+                            </li>
+                        }
+                       
+                        <li class="nav-item dropdown d-none d-xl-inline-block">
+                            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                                <span class="profile-text">Hello, @ViewBag.CurrentStaff.Name !</span>
+                                <img class="img-xs rounded-circle" src="~/ProfilePhotos/StaffPics/@ViewBag.CurrentStaff.Photo" alt="Profile image">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+
+                                <a class="dropdown-item" href="~/Staff/MyProfile">
+                                    View Profile
+                                </a>
+
+                                <a class="dropdown-item" href="~/Access/Logout">
+                                    Sign Out
+                                </a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:../../partials/_sidebar.html -->
+            @if (Session["Supplier"] == null && Session["Staff"] != null)
+            {
+
+                if (CurrentStaff.Designation == "Purchase Manager" || CurrentStaff.Designation == "Purchase Staff")
+                {
+                    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                        <ul class="nav">
+                            <li class="nav-item nav-profile">
+                                <div class="nav-link">
+                                    <a class="nav-link" href="~/PurchaseManager/Home">
+                                        <div class="user-wrapper">
+                                            <div class="profile-image">
+                                                <img src="~/ProfilePhotos/StaffPics/@ViewBag.CurrentStaff.Photo" alt="profile image">
+                                            </div>
+                                            <div class="text-wrapper">
+                                                <p class="profile-name">@ViewBag.CurrentStaff.Name</p>
+                                                <div>
+                                                    <small class="designation text-muted">@ViewBag.CurrentStaff.Designation</small>
+                                                    <span class="status-indicator online"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Staff/MyProfile">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">View Profile</span>
+                                </a>
+                            </li>
+
+
+
+                            <li class="nav-item">
+                                <a class="nav-link collapse" data-toggle="collapse" href="#ui-Supplier" aria-expanded="false" aria-controls="ui-basic">
+                                    <i class="menu-icon mdi mdi-content-copy"></i>
+                                    <span class="menu-title">Supplier</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="collapse" id="ui-Supplier">
+                                    <ul class="nav flex-column sub-menu">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/SupplierRegistration">
+                                                <i class="menu-icon mdi mdi-plus-circle"></i>
+                                                <span class="menu-title">Register Supplier</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/SupplierList">
+                                                <i class="menu-icon mdi mdi-eye"></i>
+                                                <span class="menu-title">View All Suppliers</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="collapse" href="#ui-CustomsAgent" aria-expanded="false" aria-controls="ui-basic">
+                                    <i class="menu-icon mdi mdi-content-copy"></i>
+                                    <span class="menu-title">CustomsAgent</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="collapse" id="ui-CustomsAgent">
+                                    <ul class="nav flex-column sub-menu">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/ICARegistration">
+                                                <i class="menu-icon mdi mdi-plus-circle"></i>
+                                                <span class="menu-title">Register ICA</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/ICAList">
+                                                <i class="menu-icon mdi mdi-eye"></i>
+                                                <span class="menu-title">View All ICA</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/CustomsAgentList">
+                                                <i class="menu-icon mdi mdi-eye"></i>
+                                                <span class="menu-title">View All CustomsAgent </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/FCARegistration">
+                                                <i class="menu-icon mdi mdi-plus-circle"></i>
+                                                <span class="menu-title">Register FCA</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/FCAList">
+                                                <i class="menu-icon mdi mdi-eye"></i>
+                                                <span class="menu-title">View All FCA</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="collapse" href="#ui-Materials" aria-expanded="false" aria-controls="ui-basic">
+                                    <i class="menu-icon mdi mdi-content-copy"></i>
+                                    <span class="menu-title">Raw Materials</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="collapse" id="ui-Materials">
+                                    <ul class="nav flex-column sub-menu">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/RawMaterialNew">
+                                                <i class="menu-icon mdi mdi-plus-circle"></i>
+                                                <span class="menu-title">Add New Material </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/RawMaterialList">
+                                                <i class="menu-icon mdi mdi-eye"></i>
+                                                <span class="menu-title">View All Materials</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="collapse" href="#ui-PurchaseOrder" aria-expanded="false" aria-controls="ui-basic">
+                                    <i class="menu-icon mdi mdi-content-copy"></i>
+                                    <span class="menu-title">Purchase Order</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="collapse" id="ui-PurchaseOrder">
+                                    <ul class="nav flex-column sub-menu">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/PONew">
+                                                <i class="menu-icon mdi mdi-plus-box"></i>
+                                                <span class="menu-title">Create New PO</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/POGeneratedByMe">
+                                                <i class="menu-icon mdi mdi-flash-red-eye"></i>
+                                                <span class="menu-title">All POs Generted By Me</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="~/PurchaseManager/POPendingApproval">
+                                                <i class="menu-icon mdi mdi-eye"></i>
+                                                <span class="menu-title">POs Approval Pending</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Access/Logout">
+                                    <i class="menu-icon mdi mdi-logout"></i>
+                                    <span class="menu-title">Sign Out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+                else if (CurrentStaff.Designation == "Admin")
+                {
+                    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                        <ul class="nav">
+                            <li class="nav-item nav-profile">
+                                <div class="nav-link">
+                                    <a class="nav-link" href="~/HRAdmin/Home">
+
+                                        <div class="user-wrapper">
+                                            <div class="profile-image">
+                                                <img src="~/ProfilePhotos/StaffPics/@ViewBag.CurrentStaff.Photo" alt="profile image">
+                                            </div>
+                                            <div class="text-wrapper">
+                                                <p class="profile-name">@ViewBag.CurrentStaff.Name</p>
+                                                <div>
+                                                    <small class="designation text-muted">@ViewBag.CurrentStaff.Designation</small>
+                                                    <span class="status-indicator online"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Staff/MyProfile">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">View Profile</span>
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="collapse" href="#ui-Staff" aria-expanded="false" aria-controls="ui-basic">
+                                    <i class="menu-icon mdi mdi-content-copy"></i>
+                                    <span class="menu-title">Staff</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="collapse" id="ui-Staff">
+                                    <ul class="nav flex-column sub-menu">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="StaffRegistration">
+                                                <i class="menu-icon mdi mdi-plus-circle"></i>
+                                                <span class="menu-title">Register Staff</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="StaffList">
+                                                <i class="menu-icon mdi mdi-eye"></i>
+                                                <span class="menu-title">View All Staff</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="collapse" href="#ui-department" aria-expanded="false" aria-controls="ui-basic">
+                                    <i class="menu-icon mdi mdi-content-copy"></i>
+                                    <span class="menu-title">Department</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="collapse" id="ui-department">
+                                    <ul class="nav flex-column sub-menu">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="DepartmentNew">
+                                                <i class="menu-icon mdi mdi-plus-circle"></i>
+                                                <span class="menu-title">Add Department</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="DepartmentList">
+                                                <i class="menu-icon mdi mdi-eye"></i>
+                                                <span class="menu-title">View All Departments</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/HRAdmin/TrackPO">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">Track_PurchaseOrder</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/HRAdmin/OngoingPO">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">Ongoing PO</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/HRAdmin/DeliveredPO">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">Delivered PO</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/HRAdmin/CancelledPO">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">Cancelled PO</span>
+                                </a>
+                            </li>
+
+
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Access/Logout">
+                                    <i class="menu-icon mdi mdi-logout"></i>
+                                    <span class="menu-title">Sign Out</span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </nav>
+                }
+                else if (CurrentStaff.Designation == "Finance Manager" || CurrentStaff.Designation == "Finance Staff")
+                {
+                    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                        <ul class="nav">
+                            <li class="nav-item nav-profile">
+                                <div class="nav-link">
+                                    <a class="nav-link" href="~/Finance/ImportDutyPending">
+
+                                        <div class="user-wrapper">
+                                            <div class="profile-image">
+                                                <img src="~/ProfilePhotos/StaffPics/@ViewBag.CurrentStaff.Photo" alt="profile image">
+                                            </div>
+                                            <div class="text-wrapper">
+                                                <p class="profile-name">@ViewBag.CurrentStaff.Name</p>
+                                                <div>
+                                                    <small class="designation text-muted">@ViewBag.CurrentStaff.Designation</small>
+                                                    <span class="status-indicator online"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Staff/MyProfile">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">View Profile</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Finance/ImportDutyPending">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">Import Duty Pending</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Finance/ImportDutyPaid">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">Import Duty Paid</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Finance/ImportCleared">
+                                    <i class="menu-icon mdi mdi-face-profile"></i>
+                                    <span class="menu-title">Import Cleared</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Access/Logout">
+                                    <i class="menu-icon mdi mdi-logout"></i>
+                                    <span class="menu-title">Sign Out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            }
+            @if (Session["Supplier"] != null && Session["Staff"] == null)
+            {
+                
+                <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                    <ul class="nav">
+                        <li class="nav-item nav-profile">
+
+                            <div class="nav-link">
+                                <a class="nav-link" href="~/Supplier/Home">
+                                    <div class="user-wrapper" style="padding:0px; margin:0px;">
+                                        <div class="profile-image">
+                                            <img src="~/ProfilePhotos/SupplierPics/@ViewBag.CurrentSupplier.Photo" alt="profile image">
+                                        </div>
+                                        <div class="text-wrapper">
+                                            <p class="profile-name">@ViewBag.CurrentSupplier.Name</p>
+                                            <div>
+                                                <small class="designation text-muted">@ViewBag.CurrentSupplier.Country</small>
+                                                <span class="status-indicator online"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Supplier/MyProfileSupplier">
+                                <i class="menu-icon mdi mdi-face-profile"></i>
+                                <span class="menu-title">View Profile</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Supplier/NewPO">
+                                <i class="menu-icon mdi mdi-logout"></i>
+                                <span class="menu-title">New PO's</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Supplier/OngoingPO">
+                                <i class="menu-icon mdi mdi-logout"></i>
+                                <span class="menu-title">Ongoing PO's</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Supplier/RejectedPO">
+                                <i class="menu-icon mdi mdi-logout"></i>
+                                <span class="menu-title">Rejected PO's</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Supplier/DispatchedPO">
+                                <i class="menu-icon mdi mdi-logout"></i>
+                                <span class="menu-title">Dispatched PO's</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Supplier/DeliveredPO">
+                                <i class="menu-icon mdi mdi-logout"></i>
+                                <span class="menu-title">Delivered PO's</span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Access/Logout">
+                                <i class="menu-icon mdi mdi-logout"></i>
+                                <span class="menu-title">Sign Out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            }
+            <!-- partial -->
+            <div class="main-panel">
+                @RenderBody()
+                <!-- content-wrapper ends -->
+                <!-- partial:../../partials/_footer.html -->
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="~/StarAdmin/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/StarAdmin/vendors/js/vendor.bundle.addons.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="~/StarAdmin/js/off-canvas.js"></script>
+    <script src="~/StarAdmin/js/misc.js"></script>
+    @*<script>
+            $(document).ready(function () {
+                //alert("123");
+
+                setInterval(function {
+                    $.get("~/AllUser/GetNumber", function (data) {
+                        $(".notif_number").html(data);
+                        alert("refresh done.");
+                    });
+                }, 50000);
+
+
+            });
+        </script>*@
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <!-- End custom js for this page-->
+</body>
+</html>

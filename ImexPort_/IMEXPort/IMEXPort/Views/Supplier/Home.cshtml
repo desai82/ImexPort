@@ -1,0 +1,131 @@
+﻿@using System.Data;
+@{
+				/**/
+
+				Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+				DataTable NewPO = ViewBag.NewPO;
+				DataTable OngoingPO = ViewBag.OngoingPO;
+				DataTable RejectedPO = ViewBag.RejectedPO;
+				DataTable DispatchedPO = ViewBag.DispatchedPO;
+				DataTable DeliveredPO = ViewBag.DeliveredPO;
+				int NewPOCount = NewPO.Rows.Count;
+				int OngoingPOCount = OngoingPO.Rows.Count;
+				int RejectedPOCount = RejectedPO.Rows.Count;
+				int DispatchedPOCount = DispatchedPO.Rows.Count;
+				int DeliveredPOCount = DeliveredPO.Rows.Count;
+
+
+
+}
+
+<div class="content-wrapper">
+	<div class="row">
+
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-8 grid-margin stretch-card" style="height:225px;box-shadow:rgba(0,0,0,0.4);">
+
+			<div class="card card-statistics" style="background-image: linear-gradient(to bottom, #F2F8F9, #e5efff, #b6e3ff, #75dbf5, #27B9DA); ">
+				<a class="nav-link" href="~/Supplier/NewPO">
+					<div class="card-body">
+						<div class="clearfix">
+							<div class="float-left">
+								<img src=" ~/Icons/newPO.png" height="50px" width="50px" />
+							</div>
+							<div class="float-right" style="margin-top: 12px;">
+								<p class="mb-0 text-right" style=" font-size:20px;margin-left:0px">New Orders</p>
+								<div class="fluid-container" style="margin-top: 5px;">
+									<h3 class="font-weight-medium text-right mb-0">#@NewPOCount</h3>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</a>
+			</div>
+
+		</div>
+
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-8 grid-margin stretch-card" style="height:225px;">
+			<div class="card card-statistics" style="background-image: linear-gradient(to bottom, #F2F8F9, #e5efff, #b6e3ff, #75dbf5, #27B9DA);">
+				<a class="nav-link" href="~/Supplier/OngoingPO">
+					<div class="card-body">
+						<div class="clearfix">
+							<div class="float-left">
+								<img src=" ~/Icons/ongoingPO.png" height="50px" width="50px" />
+							</div>
+							<div class="float-right" style="margin-top: 12px;">
+								<p class="mb-0 text-right" style=" font-size:20px;margin-left:0px">Ongoing Orders</p>
+								<div class="fluid-container" style="margin-top: 5px;">
+									<h3 class="font-weight-medium text-right mb-0">#@OngoingPOCount</h3>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-8 grid-margin stretch-card" style="height:225px;">
+			<div class="card card-statistics" style="background-image: linear-gradient(to bottom, #F2F8F9, #e5efff, #b6e3ff, #75dbf5, #27B9DA);">
+				<a class="nav-link" href="~/Supplier/RejectedPO">
+					<div class="card-body">
+
+						<div class="clearfix">
+							<div class="float-left">
+								<img src=" ~/Icons/rejectPO.png" height="50px" width="50px" />
+							</div>
+							<div class="float-right" style="margin-top: 12px;">
+								<p class="mb-0 text-right" style=" font-size:20px;margin-left:0px">Rejected Orders</p>
+								<div class="fluid-container" style="margin-top: 5px;">
+									<h3 class="font-weight-medium text-right mb-0">#@RejectedPOCount</h3>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</a>
+			</div>
+		</div>
+
+	</div>
+	<div class="row justify-content-center">
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 grid-margin stretch-card" style="height:225px;">
+			<div class="card card-statistics" style="background-image: linear-gradient(to bottom, #F2F8F9, #e5efff, #b6e3ff, #75dbf5, #27B9DA);">
+				<a class="nav-link" href="~/Supplier/DispatchedPO">
+					<div class="card-body ">
+						<div class="clearfix justify-content-center">
+							<div class="float-left">
+								<img src=" ~/Icons/dispatchedPO.png" height="50px" width="50px" />
+							</div>
+							<div class="float-right" style="margin-top: 12px;">
+								<p class="mb-0 text-right" style=" font-size:20px;margin-left:0px">Dispatched Orders</p>
+								<div class="fluid-container" style="margin-top: 5px;">
+									<h3 class="font-weight-medium text-right mb-0">#@DispatchedPOCount</h3>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-8 grid-margin stretch-card" style="height:225px;">
+			<div class="card card-statistics" style="background-image: linear-gradient(to bottom, #F2F8F9, #e5efff, #b6e3ff, #75dbf5, #27B9DA);">
+				<a class="nav-link" href="~/Supplier/DeliveredPO">
+					<div class="card-body">
+						<div class="clearfix">
+							<div class="float-left">
+								<img src=" ~/Icons/deliveredPO.png" height="50px" width="50px" />
+							</div>
+							<div class="float-right" style="margin-top: 12px;">
+								<p class="mb-0 text-right" style=" font-size:20px;margin-left:0px">Delivered Orders</p>
+								<div class="fluid-container" style="margin-top: 5px;">
+									<h3 class="font-weight-medium text-right mb-0">#@DeliveredPOCount</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

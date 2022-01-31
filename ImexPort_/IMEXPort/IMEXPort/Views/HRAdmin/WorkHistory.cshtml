@@ -1,0 +1,118 @@
+﻿@using System.Data;
+@{
+	Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+
+	DataTable StaffWork = ViewBag.StaffWork;
+	
+
+	int TotalStaffCount = 0, StaffRejBySuper = 0, StaffReleBySuper = 0, StaffRejBySupp = 0, StaffAcceBySupp = 0, StaffDelivered = 0;
+	for (int i = 0; i < StaffWork.Rows.Count; i++)
+	{
+		if (StaffWork.Rows[i]["Status"].ToString() == "Rejected by Supervisor")
+		{
+			StaffRejBySuper = StaffRejBySuper + 1;
+		}
+		if (StaffWork.Rows[i]["Status"].ToString() != "Draft" && StaffWork.Rows[i]["Status"].ToString() != "Submitted For Approval"
+			&& StaffWork.Rows[i]["Status"].ToString() != "Rejected by Supervisor" && StaffWork.Rows[i]["Status"].ToString() != "Cancelled")
+		{
+			StaffReleBySuper = StaffReleBySuper + 1;
+		}
+		if (StaffWork.Rows[i]["Status"].ToString() == "Accepted By Supplier" || StaffWork.Rows[i]["Status"].ToString() == "Supplier Dispatched" 
+		   || StaffWork.Rows[i]["Status"].ToString() == "FCA Received" || StaffWork.Rows[i]["Status"].ToString() == "FCA Dispatched" 
+		   || StaffWork.Rows[i]["Status"].ToString() == "ICA Arrived" || StaffWork.Rows[i]["Status"].ToString() == "Import Duty Pending" 
+		   || StaffWork.Rows[i]["Status"].ToString() == "Import Duty Paid" || StaffWork.Rows[i]["Status"].ToString() == "Import Cleared" 
+		   || StaffWork.Rows[i]["Status"].ToString() == "Received At Plant")
+		{
+			StaffAcceBySupp = StaffAcceBySupp + 1;
+		}
+		if (StaffWork.Rows[i]["Status"].ToString() == "Rejected by Supplier")
+		{
+			StaffRejBySupp = StaffRejBySupp + 1;
+		}
+		if (StaffWork.Rows[i]["Status"].ToString() == "Received At Plant")
+		{
+			StaffDelivered = StaffDelivered + 1;
+		}
+	}
+	TotalStaffCount = StaffRejBySuper + StaffReleBySuper + StaffRejBySupp + StaffDelivered + StaffAcceBySupp;
+
+
+
+	
+
+	int[] StaffCount = { StaffRejBySuper, StaffReleBySuper, StaffRejBySupp, StaffAcceBySupp, StaffDelivered };
+
+}
+
+<div class="content-wrapper">
+	<div class="col-lg-12 grid-margin stretch-card">
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title"></h4>
+				<canvas id="pieChart1" style="height:500px"></canvas>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(function () {
+		/* ChartJS
+		 * -------
+		 * Data and config for chartjs
+		 */
+		'use strict';
+		var doughnutPieData = {
+			datasets: [{
+				data: [ @StaffRejBySuper, @StaffReleBySuper, @StaffRejBySupp, @StaffAcceBySupp, @StaffDelivered ],
+				backgroundColor: [
+
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(255, 206, 86, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(153, 102, 255, 0.5)',
+					'rgba(130, 85, 115, 0.5)',
+				],
+				borderColor: [
+
+					'rgba(54, 162, 235, 1)',
+					'rgba(255, 206, 86, 1)',
+					'rgba(75, 192, 192, 1)',
+					'rgba(153, 102, 255, 1)',
+					'rgba(100, 100, 100, 1)',
+				],
+			}],
+
+			// These labels appear in the legend and in the tooltips when hovering different arcs
+			labels: [
+				'Rejected By Supervisor',
+				'Released By Supervisor',
+				'Rejected By Supplier',
+				'Accepted By Supplier',
+				'Delivered',
+
+			]
+		};
+		var doughnutPieOptions = {
+			responsive: true,
+			animation: {
+				animateScale: true,
+				animateRotate: true
+			}
+		};
+
+
+
+		if ($("#pieChart1").length) {
+			var pieChartCanvas = $("#pieChart1").get(0).getContext("2d");
+			var pieChart = new Chart(pieChartCanvas, {
+				type: 'pie',
+				data: doughnutPieData,
+				options: doughnutPieOptions
+			});
+		}
+
+	});
+</script>
+
+

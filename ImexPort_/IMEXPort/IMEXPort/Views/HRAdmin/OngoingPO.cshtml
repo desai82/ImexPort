@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+}
+<div class="content-wrapper">
+    <div class="row">
+        <di class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+                    <h1 class="card-title">Ongoing PurchaseOrders </h1>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>NO.</th>
+                                    <th>POID</th>
+                                    <th>Status</th>
+                                    <th>Created By</th>
+                                    <th>Supplier</th>
+                                </tr>
+
+
+                            </thead>
+                            <tbody>
+
+                                @for (int i = 0; i < Model.Rows.Count; i++)
+                                {
+                                    <tr>
+                                        <td>@(i + 1)</td>
+                                        <td>#PurchaseOrder-@Model.Rows[i]["PurchaseOrderID"]</td>
+                                        <td>@Model.Rows[i]["Status"]</td>
+                                        <td>@Model.Rows[i]["StaffID"]</td>
+                                        <td>@Model.Rows[i]["SupplierID"]</td>
+
+
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </di>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,46 @@
+﻿@using System.Data;
+@{
+	Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+	DataTable SID = ViewBag.SID;
+}
+
+
+<div class="content-wrapper">
+	<div class="row">
+
+		<div class="col-9 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h1 class="card-title">Add New Raw Materials</h1>
+					
+					<form class="forms-sample" action="RawMaterialNewSubmit" method="post" enctype="multipart/form-data">
+						<div class="form-group">
+							<label for="exampleInputName1">Material Name</label>
+							<input type="text" class="form-control" id="exampleInputName1" placeholder="Name" name="MaterialName" required data-error="Enter properly">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail3">MaterialCode</label>
+							<input type="text" class="form-control"  placeholder="MaterialCode" name="MaterialCode" required data-error="Enter properly" >
+						</div>
+						<div class="form-group">
+							<label for="exampleInputMobile">Staff Name </label>
+							<select class="form-control" name="StaffID" tabindex="1" data-placeholder="Select here..">
+								@for (int i = 0; i < SID.Rows.Count; i++)
+								{
+								<option value='@SID.Rows[i]["StaffID"]'>@SID.Rows[i]["Name"]</option>
+								}
+							</select>
+						</div>
+					
+						
+						<button type="submit" class="btn btn-success mr-2">Submit</button>
+						<button type="reset" class="btn btn-success mr-2">Reset</button>
+
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

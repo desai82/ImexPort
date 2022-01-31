@@ -1,0 +1,99 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <di class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Search Supplier</h2>
+
+                    <form action="SupplierSearchSubmit" method="post" enctype="multipart/form-data">
+
+                        <h5><u>Search By Name</u></h5>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="Name" />
+                            </div>
+                        </div>
+
+                        <h5><u>Search By Country</u></h5>
+
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Country</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="Country" />
+                            </div>
+                        </div>
+
+
+
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <div class="form-group justify-content-center row">
+                                    <div class="form-group">
+                                        <button class="btn btn-primary  submit-btn btn-block">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                    <h1 class="card-title">Supplier List</h1>
+
+                    <div class="table-responsive">
+                        <table class="table" id="SupplierList">
+                            <thead>
+                                <tr>
+                                    <th>SupplierID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Username</th>
+                                    <th>Active</th>
+                                    <th>Country</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @for (int i = 0; i < Model.Rows.Count; i++)
+                                {
+                                    <tr>
+                                        <td>@Model.Rows[i]["SupplierID"]</td>
+                                        <td>@Model.Rows[i]["Name"]</td>
+                                        <td>@Model.Rows[i]["Email"]</td>
+                                        <td>@Model.Rows[i]["Mobile"]</td>
+                                        <td>@Model.Rows[i]["Username"]</td>
+                                        <td>@Model.Rows[i]["IsActive"]</td>
+                                        <td>@Model.Rows[i]["Country"]</td>
+                                        <td><a href="SupplierEdit?SupplierID=@Model.Rows[i]["SupplierID"]">Edit</a></td>
+
+                                        <td><a href=" MaterialOfSupplier?SupplierID=@Model.Rows[i]["SupplierID"]">Material</a></td>
+                                    </tr>
+
+                                }
+
+
+
+                            </tbody>
+                        </table>
+
+                       
+                    </div>
+                </div>
+            </div>
+        </di>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,632 @@
+﻿@using IMEXPort.Models;
+@using System.Data;
+@{
+    Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+    DataTable FCAID = ViewBag.FCAID;
+    DataTable ICAID = ViewBag.ICAID;
+    DataTable POItem = ViewBag.POItem;
+    DataTable MatID = ViewBag.MatID;
+    DataTable Designation = ViewBag.Designation;
+    string SName = ViewBag.SName;
+    DataTable ApproverID = ViewBag.ApproverID;
+    DataTable SupplierID = ViewBag.SupplierID;
+    DataTable FinanceID = ViewBag.FinanceID;
+    Staff CurrentStaff = (Staff)Session["Staff"];
+    Supplier CurrentSupplier = (Supplier)Session["Supplier"];
+}
+
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card" style="background-color:#F2F8F9">
+                <div class="card-body" style="padding:0">
+
+                    @if ((Model.Status == "Draft" || Model.Status == "Rejected By Supervisor" || Model.Status == "Rejected By Supplier") && Model.StaffID == CurrentStaff.StaffID)
+                    {
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#Submit">SUBMIT</span>
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#Discard">DISCARD</span>
+                    }
+
+                    @if ((Model.Status == "Submitted For Approval") && Model.ApproverID == CurrentStaff.StaffID)
+                    {
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#Reject">REJECT</span>
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#Release">RELEASE</span>
+                    }
+
+                    @if ((Model.Status == "Released By Supervisor") && CurrentSupplier != null && Model.SupplierID == CurrentSupplier.SupplierID)
+                    {
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#RejectS">REJECT</span>
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#ACCEPT">ACCEPT</span>
+                    }
+
+                    @if ((Model.Status == "Accepted By Supplier") && CurrentSupplier != null && Model.SupplierID == CurrentSupplier.SupplierID)
+                    {
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#DISPATCHED">DISPATCH</span>
+                    }
+
+                    @if ((Model.Status == "Supplier Dispatched") && CurrentSupplier != null && Model.SupplierID == CurrentSupplier.SupplierID)
+					{
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#QRCode">QRCode</span>
+                    }
+
+                    @if ((Model.Status == "Import Duty Pending" && Model.Designation == "Finance Staff") && Model.StaffID == CurrentStaff.StaffID)
+                    {
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#ImportDutyPaid">IMPORT DUTY PAID</span>
+                    }
+
+                    @if ((Model.Status == "Import Cleared") && Model.StaffID == CurrentStaff.StaffID)
+                    {
+                        <span class="btn btn-outline-dark btn-rounded btn-fw dialoglink" targetdialog="#ReceivedAtPlant">RECEIVED AT PLANT</span>
+                    }
+
+                    <br />
+
+                    <div id="Submit" class="ss_dialog">
+                        <form class="form-sample" action="~/PurchaseManager/POSubmit" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Remarks</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="Remarks" required />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="Discard" class="ss_dialog">
+                        <form class="form-sample" action="~/PurchaseManager/PODelete" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Remarks</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="Remarks" required />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="Reject" class="ss_dialog">
+                        <form class="form-sample" action="~/PurchaseManager/PORejectBySupervisor" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Remarks</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="Remarks" required />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-close"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="Release" class="ss_dialog">
+                        <form class="form-sample" action="~/PurchaseManager/PORelease" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Remarks</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="Remarks" required />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-check"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="RejectS" class="ss_dialog">
+                        <form class="form-sample" action="~/Supplier/PORejectBySupplier" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Remarks</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="Remarks" required />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-arrow-right"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="ACCEPT" class="ss_dialog">
+                        <form class="form-sample" action="~/Supplier/ACCEPT" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Remarks</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="Remarks" required />
+                                        </div>
+                                        <div class="col-sm-4"></div>
+
+                                        <label class="col-sm-3 col-form-label">Tentative Date</label>
+                                        <div class="col-sm-5">
+                                            <input type="date" class="form-control" name="TentativeDate" required />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="DISPATCHED" class="ss_dialog">
+                        <form class="form-sample" action="~/Supplier/DISPATCHED" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Remarks</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="Remarks" required />
+                                        </div>
+                                        <div class="col-sm-4"></div>
+                                        <label class="col-sm-3 col-form-label">Invoice File</label>
+                                        <div class="col-sm-5">
+                                            <input type="file" class="form-control" name="InvoiceFile" required />
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-arrow-right"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="QRCode" class="ss_dialog">
+                        <form class="form-sample" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <img src="~/ProfilePhotos/QRCode/@ViewBag.filename1" height="100" width="100" alt="QRCode" style="margin-left:16px" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="ImportDutyPaid" class="ss_dialog">
+                        <form class="form-sample" action="#" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Remarks</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="Remarks" required />
+                                        </div>
+                                        <label class="col-sm-3 col-form-label">ImportDutyPayment File</label>
+                                        <div class="col-sm-5">
+                                            <input type="file" class="form-control" name="ImportDutyPaymentFile" required />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-arrow-right"></i>
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="ReceivedAtPlant" class="ss_dialog">
+                        <form class="form-sample" action="~/Supplier/ReceivedAtPlant" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.PurchaseOrderID" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Remarks</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="Remarks" required />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="submit" class="btn btn-icons btn-rounded btn-outline-dark">
+                                                <i class="mdi mdi-arrow-right"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title"><b>Purchase Order Details</b></h1>
+                    <form class="form-sample" action="~/PurchaseManager/PODetailsSave" method="post" enctype="multipart/form-data">
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Creator</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" readonly="readonly" class="form-control" name="StaffID" value="@Model.StaffID" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">CreateDate</label>
+                                    <div class="col-sm-9">
+                                        <input type="datetime" readonly="readonly" class="form-control" name="CreateDate" value="@Model.CreateDate" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Supplier</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" readonly="readonly" name="SupplierName" value="@SName" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Status</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="Status" class="form-control" readonly="readonly" value="@Model.Status" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (CurrentSupplier != null || Model.StaffID != CurrentStaff.StaffID || Model.Status != "Draft")
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Approver</label>
+                                        <div class="col-sm-9">
+
+                                            @for (int i = 0; i < ApproverID.Rows.Count; i++)
+                                            {
+                                                if (Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Purchase Manager" || Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Purchase Staff")
+                                                {
+                                                    if (Convert.ToInt32(ApproverID.Rows[i]["StaffID"]) == Model.ApproverID)
+                                                    {
+                                                        <input type="text" class="form-control" readonly name="approver" value="@ApproverID.Rows[i]["Name"]" />
+                                                    }
+                                                }
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Finance</label>
+                                        <div class="col-sm-9">
+
+                                            @for (int i = 0; i < ApproverID.Rows.Count; i++)
+                                            {
+                                                if (Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Finance Manager" || Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Finance Staff")
+                                                {
+                                                    if (Convert.ToInt32(ApproverID.Rows[i]["StaffID"]) == Model.FinanceID)
+                                                    {
+                                                        <input type="text" readonly  name="finance" class="form-control" value="@ApproverID.Rows[i]["Name"]" />
+                                                    }
+
+                                                }
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Requested Date</label>
+                                        <div class="col-sm-9">
+                                            <input type="datetime" class="form-control" required name="RequestedDate" value="@Model.RequestedDate" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">ForeignAgent</label>
+                                        <div class="col-sm-9">
+                                            @for (int i = 0; i < FCAID.Rows.Count; i++)
+                                            {
+                                                if (Convert.ToInt32(FCAID.Rows[i]["CustomsAgentID"]) == Model.FCAID)
+                                                {
+                                                    <input type="text" name="FCAID" readonly class="form-control" value="@FCAID.Rows[i]["Name"]" />
+                                                }
+
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">IndiaAgent</label>
+                                        <div class="col-sm-9">
+
+                                            @for (int i = 0; i < ICAID.Rows.Count; i++)
+                                            {
+                                                if (Convert.ToInt32(ICAID.Rows[i]["CustomsAgentID"]) == Model.ICAID)
+                                                {
+                                                    <input type="text" name="ICAID" readonly class="form-control" value="@ICAID.Rows[i]["Name"]" />
+                                                }
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Approver</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="ApproverID" tabindex="1">
+                                                @for (int i = 0; i < ApproverID.Rows.Count; i++)
+                                                {
+                                                    if (Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Purchase Manager" || Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Purchase Staff")
+                                                    {
+
+                                                        <option value="@ApproverID.Rows[i]["StaffID"]" @((Convert.ToInt32(ApproverID.Rows[i]["StaffID"]) == Model.ApproverID) ? "selected" : "")>@ApproverID.Rows[i]["Name"]</option>
+
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Finance</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="FinanceID" tabindex="1">
+                                                @for (int i = 0; i < ApproverID.Rows.Count; i++)
+                                                {
+                                                    if (Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Finance Manager" || Convert.ToString(ApproverID.Rows[i]["Designation"]) == "Finance Staff")
+                                                    {
+                                                        <option value="@ApproverID.Rows[i]["StaffID"]" @((Convert.ToInt32(ApproverID.Rows[i]["StaffID"]) == Model.FinanceID) ? "selected" : "")>@ApproverID.Rows[i]["Name"]</option>
+
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Requested Date</label>
+                                        <div class="col-sm-9">
+                                            <input type="datetime" class="form-control" required name="RequestedDate" value="@Model.RequestedDate" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">ForeignAgent</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="FCAID" tabindex="1">
+                                                @for (int i = 0; i < FCAID.Rows.Count; i++)
+                                                {
+                                                    <option value="@FCAID.Rows[i]["CustomsAgentID"]">@FCAID.Rows[i]["Name"]</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">IndiaAgent</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="ICAID" tabindex="1">
+                                                @for (int i = 0; i < ICAID.Rows.Count; i++)
+                                                {
+                                                    <option value="@ICAID.Rows[i]["CustomsAgentID"]">@ICAID.Rows[i]["Name"]</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+
+
+
+
+
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <div class="form-group justify-content-center row">
+                                    <div class="form-group">
+                                        <input type="hidden" name="PurchaseOrderID" value="@Model.PurchaseOrderID" />
+                                        @if (Model.Status == "Draft")
+                                        {
+                                            <button type="submit" class="btn btn-dark btn-rounded btn-fw">Save</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <di class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+                    <h1 class="card-title">PurchaserOrder Items</h1>
+
+                    <form action="~/PurchaseManager/POItemAdd" method="post" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Material</th>
+                                        <th>Quantity (KG)</th>
+                                        <th>Rate(Per 10KG)</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @for (int i = 0; i < POItem.Rows.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@POItem.Rows[i]["MaterialID"]</td>
+                                            <td>@POItem.Rows[i]["Quantity"]</td>
+                                            <td>@POItem.Rows[i]["Rate"]</td>
+                                            <td>@POItem.Rows[i]["Remarks"]</td>
+                                            @if (Model.Status == "Draft")
+                                            {
+                                                <td><a href="POItemDelete?PurchaseOrderID=@Model.PurchaseOrderID&POItemID=@POItem.Rows[i]["POItemID"]">REMOVE</a></td>
+                                            }
+                                        </tr>
+
+                                    }
+                                    @if (Model.Status == "Draft")
+                                    {
+                                        <tr>
+                                            <td>
+                                                <select class="form-control" name="MaterialID" tabindex="1">
+                                                    @for (int i = 0; i < MatID.Rows.Count; i++)
+                                                    {
+                                                        <option value="@MatID.Rows[i]["MaterialID"]">@MatID.Rows[i]["MaterialName"]</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" name="Quantity" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input type="text" name="Rate" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input type="text" name="Remarks" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="PurchaseOrderID" value="@Model.PurchaseOrderID" />
+                                                <button type="submit" class="btn btn-dark btn-rounded btn-fw">Add</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </di>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $(".ss_dialog").hide();
+        $(".dialoglink").click(function () {
+            var dialogid = $(this).attr("targetdialog");
+            $(dialogid).show();
+        });
+    });
+
+</script>
+
+

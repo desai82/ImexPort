@@ -1,0 +1,63 @@
+﻿@using System.Data
+@{
+	
+		Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+	
+	DataTable SupID = ViewBag.SupID;
+	int MaterialID = ViewBag.MaterialID;
+
+}
+
+<div class="content-wrapper">
+	<div class="row">
+		<di class="col-lg-12 grid-margin stretch-card">
+			<div class="card">
+				<div class="card-body">
+
+					<h1 class="card-title">Supplier List</h1>
+					
+					<form action="SupplierOfMaterialAdd" method="post" enctype="multipart/form-data">
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>SupplierName</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									@for (int i = 0; i < Model.Rows.Count; i++)
+									{
+										<tr>
+											<td>@Model.Rows[i]["Name"]</td>
+											<td><a href="SupplierOfMaterialDelete?SupplierName=@Model.Rows[i]["Name"]&MaterialID=@MaterialID">REMOVE</a></td>
+										</tr>
+									}
+									
+									<tr>
+										<td>
+											<select class="form-control" name="SupplierID" tabindex="1">
+												@for (int i = 0; i < SupID.Rows.Count; i++)
+												{
+													<option value='@SupID.Rows[i]["SupplierID"]'>@SupID.Rows[i]["Name"]</option>
+												}
+											</select>
+										</td>
+										<td>
+											<input type="hidden" name="MaterialID" value="@MaterialID" />
+											<button type="submit" class="btn btn-dark btn-rounded btn-fw">Add</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+			</div>
+		</di>
+	</div>
+</div>
+
+
+

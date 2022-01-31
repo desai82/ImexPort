@@ -1,0 +1,184 @@
+﻿@using System.Data
+@{
+	Layout = "~/Views/Shared/_LayoutTemplateManager.cshtml";
+	DataTable DeptID = ViewBag.DeptID;
+	DataTable StaffID = ViewBag.StaffID;
+}
+
+
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h1 class="card-title">Register New Staff</h1>
+					<form name="staffreg" class="quote-form" action="StaffNewSubmit" method="post"  enctype="multipart/form-data">
+						<p class="card-description">
+							Personal info
+						</p>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Name</label>
+									<div class="col-sm-9">
+										<input type="text" id="error-name"  required data-error="Enter name properly" class="form-control"  name="Name" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Email</label>
+									<div class="col-sm-9">
+										<input type="email" class="form-control" required data-error="Enter email properly" name="Email" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Mobile</label>
+									<div class="col-sm-9">
+										<input type="text"  required data-error="Enter properly" minlength="10" class="form-control" name="Mobile" maxlength="10"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Photo</label>
+									<div class="col-sm-9">
+										<input type="file" name="Photo" required /> 
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Username</label>
+									<div class="col-sm-9">
+										<input type="text" required data-error="Enter username" class="form-control" name="Username" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Password</label>
+									<div class="col-sm-9">
+										<input type="password" class="form-control" required data-error="Enter password properly" minlength="6" name="Password" />
+									</div>
+								</div>
+							</div>
+							
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Active</label>
+									<div class="col-sm-1">
+										<input type="checkbox" class="form-control" name="IsActive" value="1" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Department</label>
+									<div class="col-sm-9">
+										<select class="form-control" name="DepartmentID" tabindex="1" >
+											@for (int i = 0; i < DeptID.Rows.Count; i++)
+											{
+												<option value='@DeptID.Rows[i]["DepartmentID"]'>@DeptID.Rows[i]["DeptName"]</option>
+											}
+										</select>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Supervisor</label>
+									<div class="col-sm-9">
+										<select class="form-control" name="SupervisorID" tabindex="1" >
+											@for (int i = 0; i < StaffID.Rows.Count; i++)
+											{
+												
+												<option value='@StaffID.Rows[i]["SupervisorID"]'>@StaffID.Rows[i]["Name"]</option>
+												
+											}
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Designation</label>
+									<div class="col-sm-9">
+										<select class="form-control" name="Designation"  required tabindex="1">
+											<option value="Admin">Admin</option>
+											<option value="Purchase Manager">Purchase Manager</option>
+											<option value="Purchase Staff">Purchase Staff</option>
+											<option value="Finance Manager">Finance Manager</option>
+											<option value="Finance Staff">Finance Staff</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+				
+
+						<div class="row ">
+							<div class="col-md-12">
+								<div class="form-group justify-content-center row">
+									<div class="form-group">
+										<button type="submit" onclick=" return validateForm()" class="btn btn-dark btn-rounded btn-fw">Register</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
